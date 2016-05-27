@@ -2079,7 +2079,6 @@ public:
         size += PrependStruct(builder, _u("SIMDBuiltinBV"), &moduleInfo->GetAsmSimdBuiltinUsed());
 
         size += PrependInt32(builder, _u("MaxHeapAccess"), moduleInfo->GetMaxHeapAccess());
-        size += PrependByte(builder, _u("UsesChangeHeap"), false); //TODOls remove later
 
 
 #ifdef BYTE_CODE_MAGIC_CONSTANTS
