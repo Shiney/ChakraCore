@@ -2619,7 +2619,7 @@ namespace Js
             {
                 ScriptFunction* functionObj = (ScriptFunction*)localModuleFunctions[i];
                 AnalysisAssert(functionObj != nullptr);
-                // don't want to generate code for APIs like changeHeap
+                // don't want to generate code for APIs
                 if (functionObj->GetEntryPoint() == Js::AsmJsExternalEntryPoint)
                 {
                     GenerateFunction(asmJsModuleFunctionBody->GetScriptContext()->GetNativeCodeGenerator(), functionObj->GetFunctionBody(), functionObj);
