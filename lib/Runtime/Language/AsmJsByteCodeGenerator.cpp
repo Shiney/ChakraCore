@@ -92,7 +92,6 @@ namespace Js
         , mCompiler( compiler )
         , mByteCodeGenerator(mCompiler->GetByteCodeGenerator())
         , mNestedCallCount(0)
-        , mIsCallLegal(true)
     {
         mWriter.Create();
 
@@ -1091,11 +1090,7 @@ namespace Js
         {
             throw AsmJsCompilationException(_u("Different return type found for function %s"), funcName->Psz());
         }
-        if (!mIsCallLegal)
-        {
-            Assert(!isMathBuiltin); // math builtins cannot change heap, so they are specifically excluded from this rule
-            throw AsmJsCompilationException(_u("Call is not legal at this location"));
-        }
+
         const int StartCallIndex = 0;
         const int CallIndex = 1;
         const int ArgOut_DbIndex = 2;
@@ -1822,11 +1817,7 @@ namespace Js
         uint32 indexSlot = 0;
         TypedArrayEmitType emitType = simdFunction->IsSimdLoadFunc() ? TypedArrayEmitType::LoadTypedArray : TypedArrayEmitType::StoreTypedArray;
 
-        // if changeHeap is implemented, calls are illegal in index expression
-        bool wasCallLegal = mIsCallLegal;
-        mIsCallLegal = !mCompiler->UsesChangeHeap();
         EmitExpressionInfo indexInfo = EmitTypedArrayIndex(indexNode, op, indexSlot, viewType, emitType);
-        mIsCallLegal = wasCallLegal;
 
         EmitExpressionInfo valueInfo = { 0, AsmJsType::Void };
         // convert opcode to const if needed
@@ -2548,11 +2539,7 @@ namespace Js
 
         OpCodeAsmJs op;
         uint32 indexSlot = 0;
-        // if changeHeap is implemented, calls are illegal in index expression
-        bool wasCallLegal = mIsCallLegal;
-        mIsCallLegal = !mCompiler->UsesChangeHeap();
         EmitExpressionInfo indexInfo = EmitTypedArrayIndex(indexNode, op, indexSlot, viewType, LoadTypedArray);
-        mIsCallLegal = wasCallLegal;
         mFunction->ReleaseLocationGeneric(&indexInfo);
 
         EmitExpressionInfo info( arrayView->GetType() );
@@ -2684,12 +2671,8 @@ namespace Js
 
             OpCodeAsmJs op;
             uint32 indexSlot = 0;
-            // if changeHeap is implemented, calls are illegal in index expression and on right hand side of assignments
-            bool wasCallLegal = mIsCallLegal;
-            mIsCallLegal = !mCompiler->UsesChangeHeap();
             EmitExpressionInfo indexInfo = EmitTypedArrayIndex(indexNode, op, indexSlot, viewType, StoreTypedArray);
             rhsEmit = Emit(rhs);
-            mIsCallLegal = wasCallLegal;
 
             if (viewType == ArrayBufferView::TYPE_FLOAT32)
             {

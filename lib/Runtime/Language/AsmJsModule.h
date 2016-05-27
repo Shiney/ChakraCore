@@ -202,7 +202,6 @@ namespace Js {
         bool mBufferArgNameInit : 1;
 #endif
         bool mInitialised : 1;
-        bool mUsesChangeHeap : 1;
         bool mUsesHeapBuffer : 1;
     public:
         AsmJsModuleCompiler( ExclusiveContext *cx, AsmJSParser &parser );
@@ -279,7 +278,6 @@ namespace Js {
         bool Fail( ParseNode* usepn, const wchar *error );
 
         bool AreAllFuncTableDefined();
-        bool UsesChangeHeap() { return mUsesChangeHeap; }
         bool UsesHeapBuffer() { return mUsesHeapBuffer; }
         void SetUsesHeapBuffer(bool val) { mUsesHeapBuffer = val; }
         void UpdateMaxHeapAccess(uint index);
@@ -292,7 +290,6 @@ namespace Js {
         bool CommitModule();
         bool FinalizeModule();
         AsmJsFunc* CreateNewFunctionEntry(ParseNode* pnodeFnc);
-        bool CheckChangeHeap(AsmJsFunc * func);
 
 
         void InitMemoryOffsets           ();
@@ -405,7 +402,6 @@ namespace Js {
         BVStatic<ASMSIMD_BUILTIN_SIZE>  mAsmSimdBuiltinUsed;
 
         uint                         mMaxHeapAccess;
-        bool                         mUsesChangeHeap;
         bool                         mIsProcessed;
     public:
         AsmJsModuleInfo( Recycler* recycler ) :
@@ -423,7 +419,6 @@ namespace Js {
             , mFunctionImports( nullptr )
             , mFunctions( nullptr )
             , mMaxHeapAccess(0)
-            , mUsesChangeHeap(false)
             , mIsProcessed(false)
             , mSlotMap(nullptr)
         {
@@ -585,14 +580,6 @@ namespace Js {
         inline BVStatic<ASMARRAY_BUILTIN_SIZE> GetAsmArrayBuiltinUsed()const
         {
             return mAsmArrayBuiltinUsed;
-        }
-        void SetUsesChangeHeap(bool val)
-        {
-            mUsesChangeHeap = val;
-        }
-        inline bool GetUsesChangeHeap() const
-        {
-            return mUsesChangeHeap;
         }
         void SetMaxHeapAccess(uint val)
         {

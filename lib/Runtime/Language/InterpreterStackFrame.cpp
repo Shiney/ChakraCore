@@ -2566,19 +2566,14 @@ namespace Js
 
             AsmJsScriptFunction* scriptFuncObj = (AsmJsScriptFunction*)ScriptFunction::OP_NewScFunc(pDisplay, (FunctionProxy**)proxy);
             localModuleFunctions[modFunc.location] = scriptFuncObj;
-            if (i == 0 && info->GetUsesChangeHeap())
+
+            if (scriptFuncObj->GetDynamicType()->GetEntryPoint() == DefaultDeferredDeserializeThunk)
             {
-                scriptFuncObj->GetDynamicType()->SetEntryPoint(AsmJsChangeHeapBuffer);
+                JavascriptFunction::DeferredDeserialize(scriptFuncObj);
             }
-            else
-            {
-                if (scriptFuncObj->GetDynamicType()->GetEntryPoint() == DefaultDeferredDeserializeThunk)
-                {
-                    JavascriptFunction::DeferredDeserialize(scriptFuncObj);
-                }
-                scriptFuncObj->GetDynamicType()->SetEntryPoint(AsmJsExternalEntryPoint);
-                scriptFuncObj->GetFunctionBody()->GetAsmJsFunctionInfo()->SetModuleFunctionBody(asmJsModuleFunctionBody);
-            }
+            scriptFuncObj->GetDynamicType()->SetEntryPoint(AsmJsExternalEntryPoint);
+            scriptFuncObj->GetFunctionBody()->GetAsmJsFunctionInfo()->SetModuleFunctionBody(asmJsModuleFunctionBody);
+            
             scriptFuncObj->SetModuleMemory(moduleMemoryPtr);
             if (!info->IsRuntimeProcessed())
             {

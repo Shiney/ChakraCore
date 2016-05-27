@@ -2079,7 +2079,7 @@ public:
         size += PrependStruct(builder, _u("SIMDBuiltinBV"), &moduleInfo->GetAsmSimdBuiltinUsed());
 
         size += PrependInt32(builder, _u("MaxHeapAccess"), moduleInfo->GetMaxHeapAccess());
-        size += PrependByte(builder, _u("UsesChangeHeap"), moduleInfo->GetUsesChangeHeap());
+        size += PrependByte(builder, _u("UsesChangeHeap"), false); //TODOls remove later
 
 
 #ifdef BYTE_CODE_MAGIC_CONSTANTS
@@ -3552,10 +3552,6 @@ public:
         uint maxAccess;
         current = ReadUInt32(current, &maxAccess);
         moduleInfo->SetMaxHeapAccess(maxAccess);
-
-        bool usesChangeHeap;
-        current = ReadBool(current, &usesChangeHeap);
-        moduleInfo->SetUsesChangeHeap(usesChangeHeap);
 
 #ifdef BYTE_CODE_MAGIC_CONSTANTS
         current = ReadInt32(current, &constant);
