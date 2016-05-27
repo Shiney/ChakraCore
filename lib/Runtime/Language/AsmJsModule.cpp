@@ -66,7 +66,6 @@ namespace Js
     bool AsmJsModuleCompiler::CommitFunctions()
     {
         const int size = mFunctionArray.Count();
-        // if changeHeap is defined, it must be first function, so we should skip it
         for (int i = 0; i < size; i++)
         {
             AsmJsFunc* func = mFunctionArray.Item(i);
@@ -81,7 +80,6 @@ namespace Js
             {
                 return false;
             }
-            asmInfo->SetIsHeapBufferConst(true); //TodoLS Remove code related probably
             asmInfo->SetUsesHeapBuffer(mUsesHeapBuffer);
             int varCount = 0;
             varCount += (int)((intRegisterSpace.GetTotalVarCount() * INT_SLOTS_SPACE) + 0.5);

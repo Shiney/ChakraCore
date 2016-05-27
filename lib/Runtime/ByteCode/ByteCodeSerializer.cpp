@@ -1979,7 +1979,6 @@ public:
         size += PrependInt32(builder, _u("IntByteOffset"), funcInfo->GetIntByteOffset());
         size += PrependInt32(builder, _u("DoubleByteOffset"), funcInfo->GetDoubleByteOffset());
         size += PrependInt32(builder, _u("FloatByteOffset"), funcInfo->GetFloatByteOffset());
-        size += PrependByte(builder, _u("IsHeapBufferConst"), funcInfo->IsHeapBufferConst());
         size += PrependByte(builder, _u("UsesHeapBuffer"), funcInfo->UsesHeapBuffer());
         size += PrependInt32(builder, _u("SIMDConstCount"), funcInfo->GetSimdConstCount());
         size += PrependInt32(builder, _u("SIMDVarCount"), funcInfo->GetSimdVarCount());
@@ -3372,8 +3371,6 @@ public:
         funcInfo->SetFloatByteOffset(count);
 
         bool boolVal;
-        current = ReadBool(current, &boolVal);
-        funcInfo->SetIsHeapBufferConst(boolVal);
         current = ReadBool(current, &boolVal);
         funcInfo->SetUsesHeapBuffer(boolVal);
 

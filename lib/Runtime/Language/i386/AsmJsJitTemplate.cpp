@@ -1326,22 +1326,7 @@ namespace Js
 
             int ReloadArrayBuffer(TemplateContext context, BYTE*& buffer)
             {
-                int size = 0;
-                if (!context->GetFunctionBody()->GetAsmJsFunctionInfo()->IsHeapBufferConst())
-                {
-                    X86TemplateData* templateData = GetTemplateData(context);
-                    // mov buffer, [mod+bufferOffset]
-                    size += MOV::EncodeInstruction<int>(buffer, InstrParamsRegAddr(ArrayBufferReg, ModuleEnvReg, AsmJsModuleMemory::MemoryTableBeginOffset));
-                    // mov tmpReg, [buffer+lenOffset]
-                    RegNum reg = templateData->GetReg<int>(1 << RegEAX);
-                    templateData->InvalidateReg(reg);
-                    size += MOV::EncodeInstruction<int>(buffer, InstrParamsRegAddr(reg, ArrayBufferReg, ArrayBuffer::GetByteLengthOffset()));
-                    // mov [mod+offset], tmpReg
-                    size += EncodingHelpers::SetStackReg<int>(buffer, templateData, templateData->GetArraySizeOffset(), reg);
-                    // mov buffer, [buffer+buffOffset]
-                    size += MOV::EncodeInstruction<int>(buffer, InstrParamsRegAddr(ArrayBufferReg, ArrayBufferReg, ArrayBuffer::GetBufferOffset()));
-                }
-                return size;
+                return 0; //TODOls simplify
             }
 
             int CheckForArrayBufferDetached(TemplateContext context, BYTE*& buffer)

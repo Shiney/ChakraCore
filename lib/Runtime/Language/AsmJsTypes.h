@@ -1010,7 +1010,6 @@ namespace Js
         int mIntByteOffset, mDoubleByteOffset, mFloatByteOffset;
         AsmJsRetType mReturnType;
 
-        bool mIsHeapBufferConst;
         bool mUsesHeapBuffer;
         int mSimdConstCount, mSimdVarCount, mSimdTmpCount, mSimdByteOffset;
 
@@ -1039,7 +1038,6 @@ namespace Js
                               asmJsModuleFunctionBody(nullptr),
                               mTJBeginAddress(nullptr),
                               mUsesHeapBuffer(false),
-                              mIsHeapBufferConst(false),
                               mArgType(nullptr),
                               mArgSizes(nullptr) {}
         // the key is the bytecode address
@@ -1076,9 +1074,6 @@ namespace Js
         inline void SetFloatByteOffset(int val) { mFloatByteOffset = val; }
         inline int GetIntByteOffset() const{ return mIntByteOffset; }
         inline void SetIntByteOffset(int val) { mIntByteOffset = val; }
-
-        inline void SetIsHeapBufferConst(bool val) { mIsHeapBufferConst = val; }
-        inline bool IsHeapBufferConst() const{ return mIsHeapBufferConst; }
 
         inline void SetUsesHeapBuffer(bool val) { mUsesHeapBuffer = val; }
         inline bool UsesHeapBuffer() const{ return mUsesHeapBuffer; }
@@ -1133,8 +1128,7 @@ namespace Js
 
         inline bool AccessNeedsBoundCheck(uint offset) const
         {
-            // Normally, heap has min size of 0x10000, but if you use ChangeHeap, min heap size is increased to 0x1000000
-            return offset >= 0x1000000 || (IsHeapBufferConst() && offset >= 0x10000);
+            return offset >= 0x10000;
         }
 
     };
