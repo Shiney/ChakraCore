@@ -351,7 +351,9 @@ PHASE(All)
 #else
 #define DEFAULT_CONFIG_BgJitDelay           (30)
 #endif
+
 #define DEFAULT_CONFIG_ASMJS                (true)
+#define DEFAULT_CONFIG_AsmJsChangeHeap      (true)
 #define DEFAULT_CONFIG_AsmJsEdge            (false)
 #define DEFAULT_CONFIG_AsmJsStopOnError     (false)
 #define DEFAULT_CONFIG_SIMDJS               (false)
@@ -746,8 +748,10 @@ FLAGNR(Boolean, ValidateInlineStack, "Does a stack walk on helper calls to valid
 FLAGNR(Boolean, AsmDiff               , "Dump the IR without memory locations and varying parameters.", false)
 FLAGNR(String,  AsmDumpMode           , "Dump the final assembly to a file without memory locations and varying parameters\n\t\t\t\t\tThe 'filename' is the file where the assembly will be dumped. Dump to console if no file is specified", nullptr)
 FLAGR (Boolean, Asmjs                 , "Enable Asmjs", DEFAULT_CONFIG_ASMJS)
+FLAGNR(Boolean, AsmJsChangeHeap       , "Enable asm.js change heap support.", DEFAULT_CONFIG_AsmJsChangeHeap)
 FLAGNR(Boolean, AsmJsStopOnError      , "Stop execution on any AsmJs validation errors", DEFAULT_CONFIG_AsmJsStopOnError)
 FLAGNR(Boolean, AsmJsEdge             , "Enable asm.js features which may have backward incompatible changes or not validate on old demos", DEFAULT_CONFIG_AsmJsEdge)
+
 
 FLAGPR_REGOVR_EXP(Boolean, ES6, Simdjs, "Enable Simdjs", DEFAULT_CONFIG_SIMDJS)
 FLAGR(Boolean, Simd128TypeSpec, "Enable type-specialization of Simd128 symbols", false)
