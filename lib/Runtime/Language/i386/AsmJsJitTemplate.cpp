@@ -1324,11 +1324,6 @@ namespace Js
                 return size;
             }
 
-            int ReloadArrayBuffer(TemplateContext context, BYTE*& buffer)
-            {
-                return 0; //TODOls simplify
-            }
-
             int CheckForArrayBufferDetached(TemplateContext context, BYTE*& buffer)
             {
                 int size = 0;
@@ -1565,7 +1560,6 @@ namespace Js
             size += MOV::EncodeInstruction<int>(buffer, InstrParamsRegAddr(RegEDI, RegEBP, envOffset));
             size += MOV::EncodeInstruction<int>(buffer, InstrParamsRegAddr(RegESI, RegEBP, arrPtrOffset));
 
-            size += EncodingHelpers::ReloadArrayBuffer(context, buffer);
             templateData->InvalidateAllVolatileReg();
             return size;
         }
@@ -3166,7 +3160,6 @@ namespace Js
             Assert( FitsInByte( stackSize ) );
             size += ADD::EncodeInstruction<int>( buffer, InstrParamsRegImm<int8>( RegESP, (int8)stackSize ) );
             templateData->InvalidateAllVolatileReg();
-            size += EncodingHelpers::ReloadArrayBuffer(context, buffer);
             size += EncodingHelpers::CheckForArrayBufferDetached(context, buffer);
             if (targetOffset != templateData->GetModuleSlotOffset())
             {
@@ -3346,7 +3339,6 @@ namespace Js
 
             templateData->InternalCallDone();
 
-            size += EncodingHelpers::ReloadArrayBuffer(context, buffer);
             return size;
         }
         int AsmJsLoopBody::ApplyTemplate(TemplateContext context, BYTE*& buffer, int loopNumber)
@@ -3389,9 +3381,6 @@ namespace Js
             size += CMP::EncodeInstruction<int>(buffer, InstrParamsRegImm<int32>(RegEAX, 0));
             JumpRelocation relocLabel1;
             EncodingHelpers::EncodeShortJump<JE>(buffer, relocLabel1, &size);
-
-            // reload the array buffer after JIT loop body
-            size += EncodingHelpers::ReloadArrayBuffer(context, buffer);
 
             // Before we jump, move the result to EAX in case we return from there
             size += MOV::EncodeInstruction<int>(buffer, InstrParams2Reg(RegECX, RegEAX));
