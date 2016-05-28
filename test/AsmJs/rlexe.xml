@@ -172,6 +172,34 @@
   </test>
   <test>
     <default>
+      <files>relinkFail.js</files>
+      <baseline>relinkFail.baseline</baseline>
+      <compile-flags>-testtrace:asmjs -simdjs -maic:0</compile-flags>
+    </default>
+  </test>
+  <test>
+    <default>
+      <files>relinkFail.js</files>
+      <baseline>relinkFail.baseline</baseline>
+      <compile-flags>-testtrace:asmjs -simdjs</compile-flags>
+    </default>
+  </test>
+  <test>
+    <default>
+      <files>relinkFail.js</files>
+      <baseline>relinkFail.baseline</baseline>
+      <compile-flags>-forceserialized -testtrace:asmjs -simdjs</compile-flags>
+    </default>
+  </test>
+  <test>
+    <default>
+      <files>relinkFail.js</files>
+      <baseline>relinkFail.baseline</baseline>
+      <compile-flags>-forceserialized -testtrace:asmjs -simdjs -maic:0</compile-flags>
+    </default>
+  </test> 
+  <test>
+    <default>
       <files>WriteArrayView.js</files>
       <baseline>WriteArrayView.baseline</baseline>
       <compile-flags>-testtrace:asmjs -simdjs -maic:0</compile-flags>
